@@ -25,7 +25,7 @@ calculating the coefficent of variation but the following simple solution
 worked fine. 
 
 This code uses an incremental variance factor and a psuedo backtracking
-algorithm to build a directed graph of slices from left to right (albiet with somewhat brute force)
+algorithm to build a directed graph of slices from left to right
 in an attempt to layout the entire image. If it finds it is unable to do so it increases variance 
 until either the image is layed out or the MAX_VARIANCE is hit and it admits
 defeat. This code find the solution for the Tokyo image with a VARIANCE of 6
