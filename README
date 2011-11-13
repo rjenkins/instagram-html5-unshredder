@@ -1,8 +1,15 @@
 HTML5 solution to the Instragram Engineering Challenge: The Unshredder 
 http://instagram-engineering.tumblr.com/post/12651721845/instagram-engineering-challenge-the-unshredder
 
-Download shredded image here http://instagram-static.s3.amazonaws.com/images/TokyoPanoramaShredded.png
+Download shredded image here
+http://instagram-static.s3.amazonaws.com/images/TokyoPanoramaShredded.png or from this repro
 
-or from this repro and drag from desktop or finder to the unshredder a copy is hosted at http://memoization.com/unshred.html
+Uses HTML5 Drag and Drop support. Utlizies HTML5 Canvas for pixel level
+inspection of shredded ImageData.
+
+How To Use:
+1.) Download shredded image to local computer
+2.) Open browser to http://memoization.com/unshred.html
+2.) Drag and drop shredded Tokyo image from desktop, finder/explorer etc. to the Unshredder "Drop File Here" box
 
 Tested and works with Chrome and FF.
