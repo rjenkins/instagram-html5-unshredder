@@ -4,7 +4,7 @@ http://instagram-engineering.tumblr.com/post/12651721845/instagram-engineering-c
 Download shredded image here
 http://instagram-static.s3.amazonaws.com/images/TokyoPanoramaShredded.png or from this repro
 
-Uses HTML5 Drag and Drop support. Utlizies HTML5 Canvas for pixel level
+Uses HTML5 Drag and Drop support. Utilizies HTML5 Canvas for pixel level
 inspection of shredded ImageData.
 
 How To Use:
