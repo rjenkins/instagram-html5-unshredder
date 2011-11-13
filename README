@@ -48,7 +48,7 @@ matchCount attribute then become the currentSlices matchingRightSlice.slice
 reference.
 
 At completion determine the probable leftMost slice by finding the slice with
-the lowest matchCount and start to draw the traversing the graph drawing the
-image out on a new HTML5 canvas using the putImageData method. If
-getNextSlice() returns undefined at any point increase VARIANCE and recalculate
-matchingRightSlices
+the lowest matchCount and start to draw by traversing the graph from the
+leftmost slice drawing each slice out on a new HTML5 canvas using the putImageData method. 
+If getNextSlice() returns undefined at any point increase VARIANCE and
+recalculate matchingRightSlices.
