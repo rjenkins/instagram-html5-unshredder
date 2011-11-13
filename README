@@ -12,4 +12,4 @@ How To Use:
 2.) Open browser to http://memoization.com/unshred.html
 2.) Drag and drop shredded Tokyo image from desktop, finder/explorer etc. to the Unshredder "Drop File Here" box
 
-Tested and works with Chrome and FF.
+Tested and works with Chrome and FF. No Safari support due to HTML5 FileReader API
