@@ -37,7 +37,7 @@ Load the shredded image into an HTML5 Canvas and create an array
 of slice objects. Each slice object includes the slice index, a leftEdge
 and rightEdge array of HTML5 ImageData objects that contain a data[] of 4
 points r,g,b,a and a matchingRightSlice object that retains a reference to 
-this slices next slice and a matchCount.
+the probable next slice and a matchCount.
 
 Starting from the firstSlice walk vertically down the leftEdge array and
 compare each pixles r,g,b,a value to all other slices rightEdge r,g,b,a
