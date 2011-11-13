@@ -31,7 +31,7 @@ A Description of the algorithm is as follows.
 
 Load the shredded image into an HTML5 Canvas and create an array
 of slice objects. Each slice object includes the slice index, a leftEdge
-and rightEdge Array of HTML5 ImageData objects that contain a data[] of 4
+and rightEdge array of HTML5 ImageData objects that contain a data[] of 4
 points r,g,b,a and a matchingRightSlice object that retrains a reference to 
 this slices next slice and a matchCount.
 
