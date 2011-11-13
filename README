@@ -8,7 +8,7 @@ Uses HTML5 Drag and Drop support. Utilizies HTML5 Canvas for pixel level
 inspection of shredded ImageData.
 
 How To Use:
-1.) Download shredded image to local computer
+1.) Download TokyoPanoramaShredded.png image.
 2.) Open browser to http://memoization.com/unshred.html
 2.) Drag and drop shredded Tokyo image from desktop, finder/explorer etc. to the Unshredder "Drop File Here" box
 
