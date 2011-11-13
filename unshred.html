@@ -1,0 +1,194 @@
+<html>
+  <head>
+  <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+  <style>
+    #drop_zone {
+      border: 2px dashed #BBB;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px;
+      border-radius: 5px;
+      padding: 50px;
+      text-align: center;
+      width: 600px;
+      position:absolute;
+      left:50%;
+      top:50%;
+      margin:-75px 0 0 -330px;
+    }
+    
+    canvas { display: none; padding: 10px 0 0 150px; }
+    h1 { margin-bottom: 0px !important; }
+    .alert-message { width: 610px !important; margin: 10px 0 0 150px; }
+    
+  </style>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"/></script>
+  <script>
+    
+    $(function() {
+
+      var context = $('#shreddedImage')[0].getContext('2d');
+      var img = new Image();
+
+      img.onload = function () {
+         context.drawImage(img,0,0);
+         var us = unshredder(context);
+         us.unshred();
+         if(!us.status) $('.container').prepend('<div class="alert-message error">Unshredder Y U no unshred?</div>');
+         else $('.container').prepend('<div class="alert-message success">Dang, Unshredder you so crazy!</div>');
+         
+      }
+
+      function unshredder(context) {
+
+        var VARIATION = 0;
+        var SLICES = MAX_VARIATION = 20;
+        var WIDTH = 640;
+        var HEIGHT = 359;
+        var SLICE_WIDTH = 32;
+          
+        var that = {};
+
+        var slices = function() {
+            var slices = [];
+            for(var i=0; i<SLICES; i++) {
+              var slice = { index: i, leftEdge: [], rightEdge: [], matchingRightSlice: { slice: undefined, matchCount: 0 }};
+              slices.push(slice);
+              slice.leftMostHorizPixel = ((i+1) * SLICE_WIDTH - SLICE_WIDTH);
+              for(var j=0; j<HEIGHT; j++) {
+                slice.leftEdge.push(context.getImageData(slice.leftMostHorizPixel, j, 1, 1));
+                slice.rightEdge.push(context.getImageData(slice.leftMostHorizPixel + SLICE_WIDTH - 1, j, 1, 1));
+              }
+            }
+
+            return slices;
+        }();
+
+        var applyToSlices = function(func) { $.each(slices, func)};
+  
+        var compareLeftEdge = function(slice1, slice2) {
+          var match = 0;
+          $.each(slice1.leftEdge, function(index, val) {
+              if(Math.abs(val.data[0] - slice2.rightEdge[index].data[0]) <= VARIATION &&
+                  Math.abs(val.data[1] - slice2.rightEdge[index].data[1]) <= VARIATION &&
+                  Math.abs(val.data[2] - slice2.rightEdge[index].data[2]) <= VARIATION &&
+                  Math.abs(val.data[3] - slice2.rightEdge[index].data[3]) <= VARIATION) {
+                  match++;
+              }
+          });
+          return match;
+        };      
+  
+        var getNextSlice = function(slices, index) {
+          var nextSlice;
+
+          $.each(slices, function(i, val) {
+          if(val.matchingRightSlice.slice.index === index && val.index !== index)
+            return nextSlice = val;
+          });
+
+          return nextSlice;
+        };
+
+        var unshred = function() {
+
+          applyToSlices(function(i, slice) {
+            for(var j=0; j<slices.length; j++) {
+              var matchCount = compareLeftEdge(slice, slices[j]);
+              if(slice.matchingRightSlice.slice === undefined || slice.matchingRightSlice.matchCount < matchCount) {
+                  slice.matchingRightSlice.slice = slices[j];
+                  slice.matchingRightSlice.matchCount = matchCount;
+              }
+            }
+          });
+  
+          var leftMostSlice = slices[0];
+          
+          applyToSlices(function(i, slice) {
+              if(slice.matchingRightSlice.matchCount < leftMostSlice.matchingRightSlice.matchCount)
+              leftMostSlice = slice;
+          });
+          
+          console.log("probable leftMostSlice is: " + leftMostSlice.index);
+  
+          var unshredContext = $('#unshreddedImage')[0].getContext('2d');
+  
+          var offset = 0;
+          var currentSlice = leftMostSlice;
+          
+          while(offset < WIDTH) {
+              var imgData = context.getImageData(currentSlice.leftMostHorizPixel, 0, SLICE_WIDTH, HEIGHT);
+              unshredContext.putImageData(imgData, offset, 0);
+              currentSlice = getNextSlice(slices, currentSlice.index);
+  
+              // Failed to reconstruct slices 
+              if(currentSlice === undefined && offset + SLICE_WIDTH < WIDTH) {
+                return false;
+              }
+              
+              offset += SLICE_WIDTH;
+          }
+  
+          return true;
+        }
+
+        
+        that.status = false;
+        that.unshred = function() {
+          while(!that.status && VARIATION++ < MAX_VARIATION)
+            that.status = unshred(); 
+        }
+
+        return that;
+     }
+    
+
+      // HTML5 DnD code taken from here 
+      // http://www.html5rocks.com/en/tutorials/file/dndfiles/#toc-selecting-files-input
+      
+      function handleFileSelect(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+
+        var files = evt.dataTransfer.files; // FileList object.
+
+        // files is a FileList of File objects. List some properties.
+        var output = [];
+        for (var i = 0, f; f = files[i]; i++) {
+          var reader = new FileReader();
+            // Closure to capture the file information.
+            reader.onload = (function(theFile) {
+              return function(e) {
+                img.src = e.target.result
+                $('canvas').show();
+                $('#drop_zone').hide();
+              };
+            })(f);
+
+            // Read in the image file as a data URL.
+            reader.readAsDataURL(f);
+          }
+      }
+
+      function handleDragOver(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+      }
+
+      // Setup the dnd listeners.
+      var dropZone = $('#drop_zone')[0];
+      dropZone.addEventListener('dragover', handleDragOver, false);
+      dropZone.addEventListener('drop', handleFileSelect, false);      
+      
+    });
+    
+
+  </script>
+  </head>
+  <body>
+    <div class="container">
+      <div id="drop_zone"><h1>Drop file here</h1></div>
+      <canvas id="shreddedImage" width=640 height=359></canvas>
+      <canvas id="unshreddedImage" width=640 height=359></canvas>
+    </div>
+  </body>
+</html>
