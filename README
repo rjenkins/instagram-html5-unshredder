@@ -13,3 +13,37 @@ How To Use:
 2.) Drag and drop shredded Tokyo image from desktop, finder/explorer etc. to the Unshredder "Drop File Here" box
 
 Tested and works with Chrome and FF. No Safari support due to HTML5 FileReader API
+
+As described on the Instragram site an overly complex algorithm is not really
+needed. As an example one could imagine using a parition to randomly select a horizontal
+slice through the image looking for similarities and breaking the slices into 
+smaller and smaller horizontal sections looking for homogonous slices or
+calculating the coefficent of variation but the following simple solution
+worked fine. 
+
+This code uses an incremental variance factor and a psuedo backtracking
+algorithm to build a directed graph of slices from left to right (albiet with somewhat brute force)
+in an attempt to layout the entire image. If it finds it is unable to do so it increases variance until either the image
+is layed out or the MAX_VARIANCE is hit and it admits defeat.
+
+A Description of the algorithm is as follows.
+
+Load the shredded image into an HTML5 Canvas and create an array
+of slice objects. Each slice object includes the slice index, a leftEdge
+and rightEdge Array of HTML5 ImageData objects that contain a data[] of 4
+points r,g,b,a and a matchingRightSlice object that retrains a reference to 
+this slices next slice and a matchCount.
+
+Starting from the firstSlice walk vertically down the leftEdge array and
+compare each pixles r,g,b,a value to all other slices r,g,b,a
+values at the given corresponding x,y coordinates. Subtract the values and
+perform a Math.abs and check to see if values are within the MAX_VARIANCE
+threshold. If so increment the matchCount attribute. The slice with the highest
+matchCount attribute then become the currentSlices matchingRightSlice.slice
+reference.
+
+At completion determine the probable leftMost slice by finding the slice with
+the lowest matchCount and start to draw the traversing the graph drawing the
+image out on a new HTML5 canvas using the putImageData method. If
+getNextSlice() returns undefined at any point increase VARIANCE and recalculate
+matchingRightSlices
