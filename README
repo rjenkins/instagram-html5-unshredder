@@ -36,7 +36,7 @@ points r,g,b,a and a matchingRightSlice object that retains a reference to
 this slices next slice and a matchCount.
 
 Starting from the firstSlice walk vertically down the leftEdge array and
-compare each pixles r,g,b,a value to all other slices r,g,b,a
+compare each pixles r,g,b,a value to all other slices rightEdge r,g,b,a
 values at the given corresponding x,y coordinates. Subtract the values and
 perform a Math.abs and check to see if values are within the MAX_VARIANCE
 threshold. If so increment the matchCount attribute. The slice with the highest
