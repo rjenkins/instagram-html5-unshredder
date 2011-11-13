@@ -7,6 +7,9 @@ http://instagram-static.s3.amazonaws.com/images/TokyoPanoramaShredded.png or fro
 Uses HTML5 Drag and Drop support. Utilizies HTML5 Canvas for pixel level
 inspection of shredded ImageData.
 
+The unshredder solution code was approximately 100 lines of js (not including the code for
+drag/drop and html and css for layout and styling)
+
 How To Use:
 1.) Download TokyoPanoramaShredded.png image.
 2.) Open browser to http://memoization.com/unshred.html
