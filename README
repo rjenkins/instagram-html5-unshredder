@@ -1,7 +1,8 @@
-Download shredded image here
+HTML5 solution to the Instragram Engineering Challenge: The Unshredder 
+http://instagram-engineering.tumblr.com/post/12651721845/instagram-engineering-challenge-the-unshredder
 
-http://instagram-static.s3.amazonaws.com/images/TokyoPanoramaShredded.png
+Download shredded image here http://instagram-static.s3.amazonaws.com/images/TokyoPanoramaShredded.png
 
-or from the repro and drag from desktop or finder to the unshredder a copy is hosted at http://memoization.com/unshred.html
+or from this repro and drag from desktop or finder to the unshredder a copy is hosted at http://memoization.com/unshred.html
 
 Tested and works with Chrome and FF.
